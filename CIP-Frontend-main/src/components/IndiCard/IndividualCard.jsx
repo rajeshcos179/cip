@@ -51,6 +51,22 @@ const IndividualCard = () => {
     window.open(`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}&zoom=15`, "_blank");
   };
 
+  const sendEmail = async () => {
+    if (!details) return;
+    try {
+      await axios.post("http://localhost:5000/api/send-email", {
+        frame: details.frame, 
+        area: details.area,
+        location: { lat: details.location.lat, lng: details.location.lng } // Ensure location is sent properly
+      });
+      alert("Email sent successfully!");
+    } catch (error) {
+      console.error("Error sending email:", error);
+      alert("Failed to send email.");
+    }
+  };
+  
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
       <Card className="max-w-4xl w-full flex flex-row rounded-lg shadow-lg overflow-hidden bg-gray-900">
@@ -87,6 +103,11 @@ const IndividualCard = () => {
               <div className="flex justify-center">
                 <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300" onClick={() => openMap(details.location.lat, details.location.lng)}>
                   📍 View Threat Location on Map
+                </Button>
+              </div>
+              <div className="flex justify-center">
+                <Button className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300" onClick={sendEmail}>
+                  📧 Send Email Notification
                 </Button>
               </div>
               {station && (

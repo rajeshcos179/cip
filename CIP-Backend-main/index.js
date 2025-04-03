@@ -8,9 +8,16 @@ import threat from "./model/Threat.js";
 import cors from "cors";
 import stationRoutes from "./routes/stationRoutes.js";
 import threatRoutes from "./routes/threatRoutes.js";
+import bodyParser from "body-parser"; 
+
+
 
 const app = express();
 const PORT = 5000;
+
+
+app.use(express.json({ limit: "50mb" })); // Increase payload limit to 50MB
+app.use(express.urlencoded({ extended: true, limit: "50mb" })); // Also increase URL-encoded body limit
 
 const server = http.createServer(app);
 const io = new Server(server, {
